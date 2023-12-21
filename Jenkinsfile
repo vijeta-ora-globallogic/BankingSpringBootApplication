@@ -1,26 +1,19 @@
 pipeline {
-    agent any {
+    agent any
     tools {
-        maven jenkins-maven
-        
-    }
+        maven 'Maven3.9.6'
+        jdk 'Java11'
     }
     stages {
-        stage('Build') {
+        stage ('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
+                sh 'mvn clean package'
             }
             post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+                success {
+                    junit 'target/surefire-reports/**/*.xml'
                 }
             }
         }
-       
     }
 }
